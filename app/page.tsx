@@ -19,7 +19,6 @@ export default function PhoneScopeUI() {
       // Direct call to your n8n webhook
       const response = await fetch("https://dexreckon2.app.n8n.cloud/webhook/9c0e78b9-fb4b-446a-9fa8-6ab812c37185", {
         method: "POST",
-        mode: 'no-cors',
         headers: {
           "Content-Type": "application/json",
         },
