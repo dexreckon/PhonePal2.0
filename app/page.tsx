@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 export default function PhoneScopeUI() {
   const [phoneModel, setPhoneModel] = useState("");
@@ -16,8 +17,7 @@ export default function PhoneScopeUI() {
     setReportData(null);
 
     try {
-      // Direct call to your n8n webhook
-      const response = await fetch("https://dexreckon2.app.n8n.cloud/webhook-test/9c0e78b9-fb4b-446a-9fa8-6ab812c37185", {
+      const response = await fetch("https://dexreckon2.app.n8n.cloud/webhook/9c0e78b9-fb4b-446a-9fa8-6ab812c37185", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,7 +33,7 @@ export default function PhoneScopeUI() {
       if (!response.ok) throw new Error("AI Pipeline collapsed.");
       
       const data = await response.json();
-      setReportData(data.summary); // Maps to the respondToWebhook node output
+      setReportData(data.summary);
       
     } catch (error) {
       setReportData("⚠️ Error: Could not connect to the n8n processing node.");
@@ -46,7 +46,6 @@ export default function PhoneScopeUI() {
     <>
       <div className="liquid-bg-overlay"></div>
       
-      {/* Premium Background Video Player */}
       <video id="bg-video" autoPlay loop muted playsInline>
         <source src="/background.mp4" type="video/mp4" />
         <source
@@ -55,7 +54,6 @@ export default function PhoneScopeUI() {
         />
       </video>
 
-      {/* Ambient Liquid Glow Blobs */}
       <div className="ambient-glow glow-1"></div>
       <div className="ambient-glow glow-2"></div>
       <div className="ambient-glow glow-3"></div>
@@ -142,10 +140,54 @@ export default function PhoneScopeUI() {
                   {reportData && (
                     <>
                       <h2 className="report-meta-title">{phoneModel}</h2>
-                      <div className="meta-row" style={{ marginBottom: "20px" }}>Mode: {mode.toUpperCase()}</div>
-                      {/* Note: dangerouslySetInnerHTML is used to render markdown converted to HTML by n8n.
-                          If n8n returns raw markdown instead of HTML, you will need to add a library like react-markdown. */}
-                      <div dangerouslySetInnerHTML={{ __html: reportData || "" }} />
+                      <div className="meta-row" style={{ marginBottom: "20px" }}>
+                        Mode: {mode.toUpperCase()}
+                      </div>
+                      <ReactMarkdown
+                        components={{
+                          h1: ({ children }) => (
+                            <h1 style={{ fontSize: "1.6rem", fontWeight: "700", margin: "1.5rem 0 0.75rem", borderBottom: "1px solid rgba(255,255,255,0.15)", paddingBottom: "0.5rem" }}>{children}</h1>
+                          ),
+                          h2: ({ children }) => (
+                            <h2 style={{ fontSize: "1.35rem", fontWeight: "700", margin: "1.5rem 0 0.6rem" }}>{children}</h2>
+                          ),
+                          h3: ({ children }) => (
+                            <h3 style={{ fontSize: "1.15rem", fontWeight: "600", margin: "1.25rem 0 0.5rem", opacity: 0.95 }}>{children}</h3>
+                          ),
+                          h4: ({ children }) => (
+                            <h4 style={{ fontSize: "1rem", fontWeight: "600", margin: "1rem 0 0.4rem", opacity: 0.9 }}>{children}</h4>
+                          ),
+                          p: ({ children }) => (
+                            <p style={{ margin: "0.6rem 0", lineHeight: "1.75", opacity: 0.88 }}>{children}</p>
+                          ),
+                          strong: ({ children }) => (
+                            <strong style={{ fontWeight: "700", opacity: 1 }}>{children}</strong>
+                          ),
+                          em: ({ children }) => (
+                            <em style={{ fontStyle: "italic", opacity: 0.9 }}>{children}</em>
+                          ),
+                          ul: ({ children }) => (
+                            <ul style={{ paddingLeft: "1.5rem", margin: "0.6rem 0", listStyleType: "disc" }}>{children}</ul>
+                          ),
+                          ol: ({ children }) => (
+                            <ol style={{ paddingLeft: "1.5rem", margin: "0.6rem 0", listStyleType: "decimal" }}>{children}</ol>
+                          ),
+                          li: ({ children }) => (
+                            <li style={{ margin: "0.3rem 0", lineHeight: "1.65", opacity: 0.88 }}>{children}</li>
+                          ),
+                          hr: () => (
+                            <hr style={{ border: "none", borderTop: "1px solid rgba(255,255,255,0.15)", margin: "1.25rem 0" }} />
+                          ),
+                          blockquote: ({ children }) => (
+                            <blockquote style={{ borderLeft: "3px solid rgba(255,255,255,0.3)", paddingLeft: "1rem", margin: "1rem 0", opacity: 0.8, fontStyle: "italic" }}>{children}</blockquote>
+                          ),
+                          code: ({ children }) => (
+                            <code style={{ background: "rgba(255,255,255,0.1)", padding: "0.15rem 0.4rem", borderRadius: "4px", fontSize: "0.88em", fontFamily: "monospace" }}>{children}</code>
+                          ),
+                        }}
+                      >
+                        {reportData}
+                      </ReactMarkdown>
                     </>
                   )}
                 </div>
