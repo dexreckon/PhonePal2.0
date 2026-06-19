@@ -17,7 +17,7 @@ export default function PhoneScopeUI() {
     setReportData(null);
 
     try {
-      const response = await fetch("https://dexreckon2.app.n8n.cloud/webhook/9c0e78b9-fb4b-446a-9fa8-6ab812c37185", {
+      const response = await fetch("https://dexreckon3.app.n8n.cloud/webhook-test/9c0e78b9-fb4b-446a-9fa8-6ab812c37185", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
